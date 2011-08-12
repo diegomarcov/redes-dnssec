@@ -1,0 +1,12 @@
+\chapter{Introducción}
+
+El objetivo de este trabajo es realizar un estudio sobre DNSSEC\footnote{Domain Name System Security Extensions}, incluyendo tanto las especifaciones que lo componen como las problemáticas existentes a la hora de realizar su implementación y puesta en marcha.
+
+\section{DNS hoy}
+DNS es un sistema de nomenclatura jerárquica que permite asociar nombres a identificadores binarios asociados a cualquier equipo conectado a una red. Existen las llamadas ``zonas de autoridad'', que son porciones del espacio de nombres, y cada una de ellas está compuesta por al menos un dominio. A su vez, los subdominios de cada uno de estos dominios pueden ser delegados a otras zonas de autoridad diferentes.
+
+\subsection{Vulnerabilidades}
+Tanto algunas deficiencias inherentes al protocolo DNS como algunos defectos en las implementaciones más comunes hacen que el sistema de DNS actual sea vulnerable a diferentes tipos de ataques. En el capítulo siguiente veremos algunas de estas debilidades en detalle, con especial énfasis en \textit{cache poisoning}: una técnica que permite manipular información del caché de un servidor DNS, y una de las principales motivaciones para la creación de DNSSEC\cite{cert08}.
+
+\section{¿Qué es DNSSEC?}
+DNSSEC es un conjunto de especificaciones diseñadas para proveer mayor seguridad a los clientes DNS respecto a los orígenes e integridad de los datos\cite{rfc4033}. Dada la utilización global de DNS, la necesidad de dicha seguridad para hacer frente a las vulnerabilidades del sistema actual es cada vez más importante. La principal proposición de DNSSEC es firmar digitalmente todas las respuestas enviadas desde los servidores, de manera que los clientes puedan corroborar que la información recibida es correcta.
