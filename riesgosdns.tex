@@ -1,13 +1,18 @@
 \chapter{Amenazas a DNS}
-Existen muchos tipos de amenazas diferentes para el sistema DNS; muchas de ellas son instancias de problemas más generales, pero también existen algunas vulnerabilidades particulares al protocolo. Revisaremos a continuación las consideradas más importantes\cite{rfc3833}.
-\section{Intercepción de paquetes}
-Algunas de las amenazas más sencillas para el protocolo son las diferentes formas de intercepción de paquetes existentes. Si bien este problema está lejos de ser exclusivo de DNS, el comportamiento particular del protocolo (en el que se envían \textit{querys} o respuestas completas en un único paquete UDP sin firma digital ni encriptación) lo hace muy facilmente vulnerable. En el siguiente capítulo analizaremos de qué manera DNSSEC introduce confianza en los paquetes recibidos.
-\section{ID guessing y predicción de querys}
-Dado que el campo de ID en el encabezado está conformado por únicamente 16 bits, existen solo 2**32 combinaciones de ID entre cliente y servidor. Peor aún, en la práctica (debido a firewalls u otras restricciones) es común que el ID y el puerto UDP del cliente pueden ser predichos a partir del tráfico previo, lo que reduce el espacio de búsqueda a menos de 2**16 posibilidades: muy poco contra ataques por fuerza bruta. Si bien requiere cierta adivinación por parte de los atacantes, es muy efectivo cuando el cliente actúa de manera predecible por situaciones particulares, y puede permitir que el atacante introduzca falsas respuestas.\\
-Una vez más, observaremos cómo DNSSEC permite detectar este tipo de ataques.
+Existen muchos tipos de amenazas diferentes para el sistema DNS; muchas de ellas son instancias de problemas m\'as generales, pero tambi\'en existen algunas vulnerabilidades particulares al protocolo. Revisaremos a continuaci\'on las consideradas m\'as importantes\cite{rfc3833}.
+\section{Intercepci\'on de paquetes}
+Algunas de las amenazas m\'as sencillas para el protocolo son las diferentes formas de intercepci\'on de paquetes existentes. Si bien este problema est\'a lejos de ser exclusivo de DNS, el comportamiento particular del protocolo (en el que se env\'ian \textit{querys} o respuestas completas en un \'unico paquete UDP sin firma digital ni encriptaci\'on) lo hace muy facilmente vulnerable. En el siguiente cap\'itulo analizaremos de quÃ© manera DNSSEC introduce confianza en los paquetes recibidos.
+\section{ID guessing y predicci\'on de querys}
+Dado que el campo de ID en el encabezado est\'a conformado por \'unicamente 16 bits, existen solo 2**32 combinaciones de ID entre cliente y servidor. Peor a\'un, en la pr\'actica (debido a firewalls u otras restricciones) es com\'un que el ID y el puerto UDP del cliente pueden ser predichos a partir del tr\'afico previo, lo que reduce el espacio de b\'usqueda a menos de 2**16 posibilidades: muy poco contra ataques por fuerza bruta. Si bien requiere cierta adivinaci\'on por parte de los atacantes, es muy efectivo cuando el cliente act\'ua de manera predecible por situaciones particulares, y puede permitir que el atacante introduzca falsas respuestas.\\
+Una vez m\'as, observaremos c\'omo DNSSEC permite detectar este tipo de ataques.
 \section{Name Chaining}
-Es un tipo de amenaza particular al protocolo DNS, y son un subconjunto de los ataques llamados \" cache poisoning\" . .....
-\section{Betrayal By Trusted Server}
+Es un tipo de amenaza particular al protocolo DNS, y son un subconjunto de los ataques llamados ``cache poisoning''. En los peores casos, este tipo de ataques permiten redirigir una \textit{query} a cualquier locaci\'on elegida por el atacante. De esta manera, el atacante puede introducir direcciones DNS arbitrarias en la respuesta, e inyectar datos falsos asociados a dichas direcciones.\\
+DNSSEC puede ayudar a proteger en muy buena parte este tipo de ataques, aunque existen algunas formas m\'as avanzadas que pueden requerir trabajo adicional antes de tener una protecci\'on m\'as completa.
+\section{Traici\'on de un servidor de confianza}
+(No s\'e si incluir esto ac\'a, DNSSEC no ayuda)
 \section{Denial of Service}
+(No s\'e si incluir esto ac\'a, DNSSEC no ayuda)
 \section{Authenticated Denial of Domain Names}
+(No s\'e si incluir esto ac\'a, DNSSEC no ayuda)
 \section{Wildcards}
+Los \textit{wildcards} son utilizados para crear patrones similares a expresiones regulares que permiten sintetizar el nombre de un dominio, y evaluarlo din\'amicamente\cite{rfc1034}. SINCERAMENTE NO ENTIENDO DEL TODO, CHECK!
