@@ -1,2 +1,16 @@
-\chapter{¿En qué sigue siendo vulnerable DNSSEC?}
-BLABLABLA BLABLABALBALBA BLALBABALA
+\chapter{¿Qu\'e problemas presenta DNSSEC?}
+Para la correcta implementaci\'on y puesta en marcha de DNSSEC de manera masiva existen algunos conflictos que act\'uan a modo de traba.\\
+Por un lado, es necesario introducir algunos cambios operacionales tanto para los clientes como para los servidores. Seg\'un la lista de comprobaci\'on presentada por Ekl\"{o}v y Lagerholm en un art\'iculo del IP Journal de Cisco\cite{imp2011}, podemos destacar:
+\begin{itemize}
+ \item Open your firewall for EDNS0 signaling and allow large DNS packets using UDP and TCP over port 53.
+ \item Check the DNSSEC capabilities of all your masters and slave servers.
+ \item Check the DNSSEC capabilities of your registrar and understand their requirements for the public key you are uploading.
+ \item Make sure your IPAM system can handle secure delegations.
+ \item Plan how to handle load balancers. Develop an automation strategy if you have a lot of zones.
+ \item Plan how you will transfer your keys to a new master server if a disaster occurs.
+ \item Implement a policy for DNSSEC timer settings.
+\end{itemize}
+
+Sin embargo, todos los \'items mostrados pueden ser solucionados comprendiendo las implicaciones de la implementaci\'on del sistema y planeando por adelantado. Los problemas m\'as graves aparecen a partir de las fallas de seguridad que DNSSEC no soluciona, y en algunos casos, \textbf{llega a empeorar gravemente}. Estudiaremos a continuaci\'on los considerados maś remarcables:
+
+ACÁ VAN LOS PROBLEMAS QUE ESTÁN EN LAS SLIDES DE SEGURIDAD DEL GURÚ.
