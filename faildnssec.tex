@@ -1,16 +1,17 @@
-\chapter{¬øQu\'e problemas presenta DNSSEC?}
+\chapter{øQu\'e problemas presenta DNSSEC?}
 Para la correcta implementaci\'on y puesta en marcha de DNSSEC de manera masiva existen algunos conflictos que act\'uan a modo de traba.\\
 Por un lado, es necesario introducir algunos cambios operacionales tanto para los clientes como para los servidores. Seg\'un la lista de comprobaci\'on presentada por Ekl\"{o}v y Lagerholm en un art\'iculo del IP Journal de Cisco\cite{imp2011}, podemos destacar:
 \begin{itemize}
- \item Open your firewall for EDNS0 signaling and allow large DNS packets using UDP and TCP over port 53.
- \item Check the DNSSEC capabilities of all your masters and slave servers.
- \item Check the DNSSEC capabilities of your registrar and understand their requirements for the public key you are uploading.
- \item Make sure your IPAM system can handle secure delegations.
- \item Plan how to handle load balancers. Develop an automation strategy if you have a lot of zones.
- \item Plan how you will transfer your keys to a new master server if a disaster occurs.
- \item Implement a policy for DNSSEC timer settings.
+ \item ReconfiguraciÛn de los firewall: las \textit{queries} DNS primero intentan utilizar UDP, y posteriormente TCP si no reciben ninguna respuesta para el paquete UDP inicial \textit{o bien} la respuesta es trunca; dado que el tamaÒo de los paquetes DNSSEC es mayor, la probabilidad de que algo bloquee parte de la respuesta utilizando DNSSEC es mucho m·s grande. Para que el sistema funcione correctamente, resulta obligatorio abrir los firewall tanto para TCP como para UDP en el puerto 53. Por otro lado, como DNSSEC utiliza el standard EDNS0\footnote{Uno de los mecanismos de extensiÛn de DNS que permite, entre otras cosas, que un cliente indique que puede recibir respuestas DNS utilizando UDP con una longitud mayor a 512 bytes}, es necesario que el firewall estÈ configurado para interpretar dicho standard correctamente. De otra manera, los firewall tienden a bloquear los paquetes DNSSEC y no permiten la comunicaciÛn. Existe un estudio realizado por ICANN sobre el soporte de EDNS0 en los firewall m·s com˙nes\cite{icann07}.
+ \item Muchos TLD\footnote{Top-Level Domain} requieren que el registrante (ej: \textit{redes.org}) no se comunique directamente con el registro (\textit{.org}), sino que una tercer entidad (en inglÈs llamada \textit{registrar}) es la encargada de manejar toda la comunicaciÛn relacionada a DNS y DNSSEC. Esto implica que es necesario comprobar que el \textit{registrar} en cuestiÛn tenga efectivamente soporte para DNSSEC para el TLD en cuestiÛn.
+ \item Es muy usual que grandes organizaciones que requieren alta disponibilidad para sus servidores utilicen balanceadores de carga que respondan seg˙n el estado de los servicios. Sin embargo, actualmente son pocos los balanceadores que soportan DNSSEC.
 \end{itemize}
 
-Sin embargo, todos los \'items mostrados pueden ser solucionados comprendiendo las implicaciones de la implementaci\'on del sistema y planeando por adelantado. Los problemas m\'as graves aparecen a partir de las fallas de seguridad que DNSSEC no soluciona, y en algunos casos, \textbf{llega a empeorar gravemente}. Estudiaremos a continuaci\'on los considerados ma≈õ remarcables:
+Sin embargo, los \'items mostrados pueden ser solucionados comprendiendo las implicaciones de la implementaci\'on del sistema y a partir de una cuidadosa planificaciÛn. Los problemas m\'as graves aparecen a partir de las fallas de seguridad que DNSSEC no soluciona, y en algunos casos, \textbf{llega a empeorar gravemente}. Estudiaremos a continuaci\'on los considerados m·s remarcables: (ver las transparencias del Gur˙!!!)
 
-AC√Å VAN LOS PROBLEMAS QUE EST√ÅN EN LAS SLIDES DE SEGURIDAD DEL GUR√ö.
+\begin{itemize}
+	\item DNSSEC no mejora availability
+	\item DNSSEC empeora RADICALMENTE los ataques DDoS
+	\item DNSSEC tiene fallas que hacen que la privacidad no mejore
+	\item A˙n utilizando DNSSEC+NSEC3, hay leak de datos privados.
+\end{itemize}
