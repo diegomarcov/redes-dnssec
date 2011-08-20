@@ -1,12 +1,18 @@
 \chapter{Introducci\'on}
 
-El objetivo de este trabajo es realizar un estudio sobre DNSSEC\footnote{Domain Name System Security Extensions}, incluyendo tanto las especifaciones que lo componen como las problem\'aticas existentes a la hora de realizar su implementaci\'on y puesta en marcha.
+El objetivo de este trabajo es realizar un estudio sobre DNSSEC (Domain Name System Security Extensions), incluyendo tanto las especifaciones que lo componen como las problem\'aticas existentes a la hora de realizar su implementaci\'on y puesta en marcha.
 
 \section{DNS hoy}
-DNS es un sistema de nomenclatura jer\'arquica que permite asociar nombres a identificadores binarios asociados a cualquier equipo conectado a una red. Existen las llamadas ``zonas de autoridad'', que son porciones del espacio de nombres, y cada una de ellas est\'a compuesta por al menos un dominio. A su vez, los subdominios de cada uno de estos dominios pueden ser delegados a otras zonas de autoridad diferentes.
+DNS es un sistema de nomenclatura jer\'arquica que permite asociar nombres de dominios arbitrarios a identificadores binarios (dirección de IP) asociados a cualquier equipo conectado a una red. Este servicio a nivel global se divide en particiones disjuntas de dominios dependiendo de criterios como por ejemplo, si el nombre de dominio termina en $.com$ o $.org$.
+
+Estas particiones se denominan ``zonas de autoridad'', que son porciones del espacio de nombres, y cada una de ellas est\'a compuesta por al menos un dominio. A su vez, los subdominios de cada uno de estos dominios pueden ser delegados a otras zonas de autoridad diferentes.
 
 \subsection{Vulnerabilidades}
 Tanto algunas deficiencias inherentes al protocolo DNS como algunos defectos en las implementaciones m\'as comunes hacen que el sistema de DNS actual sea vulnerable a diferentes tipos de ataques. En el cap\'itulo siguiente veremos algunas de estas debilidades en detalle, con especial énfasis en \textit{cache poisoning}: una técnica que permite manipular informaci\'on del caché de un servidor DNS, y una de las principales motivaciones para la creaci\'on de DNSSEC\cite{cert08}.
 
 \section{¿Qué es DNSSEC?}
-DNSSEC es un conjunto de especificaciones diseñadas para proveer mayor seguridad a los clientes DNS respecto a los or\'igenes e integridad de los datos\cite{rfc4033}. Dada la utilizaci\'on global de DNS, la necesidad de dicha seguridad para hacer frente a las vulnerabilidades del sistema actual es cada vez m\'as importante. La principal proposici\'on de DNSSEC es firmar digitalmente todas las respuestas enviadas desde los servidores, de manera que los clientes puedan corroborar que la informaci\'on recibida es correcta y completa.
+DNSSEC es un conjunto de especificaciones diseñadas para proveer mayor seguridad a los clientes del servicio DNS respecto a los or\'igenes e integridad de los datos\cite{rfc4033}. 
+
+Dada la utilizaci\'on global de DNS, la necesidad de dicha seguridad para hacer frente a las vulnerabilidades del sistema actual es cada vez m\'as importante. 
+
+La principal herramienta que se utiliza DNSSEC es un sistema de firmas digitales criptogr\'aficas, que aseguran por un lado el no repudio de quien env\'ia la informaci\'on, y lo m\'as importante aun: la autenticaci\'on del emisor. De esta forma, el grado de complejidad que involucra la falsificaci\'on de respuestas de un servidor DNS aumenta considerablemente.

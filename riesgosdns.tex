@@ -1,18 +1,48 @@
 \chapter{Amenazas a DNS}
+
 Existen muchos tipos de amenazas diferentes para el sistema DNS; muchas de ellas son instancias de problemas m\'as generales, pero tambi\'en existen algunas vulnerabilidades particulares al protocolo. Revisaremos a continuaci\'on las consideradas m\'as importantes\cite{rfc3833}.
+
 \section{Intercepci\'on de paquetes}
-Algunas de las amenazas m\'as sencillas para el protocolo son las diferentes formas de intercepci\'on de paquetes existentes. Si bien este problema est\'a lejos de ser exclusivo de DNS, el comportamiento particular del protocolo (en el que se env\'ian \textit{querys} o respuestas completas en un \'unico paquete UDP sin firma digital ni encriptaci\'on) lo hace muy facilmente vulnerable. En el siguiente cap\'itulo analizaremos de qu\'e manera DNSSEC introduce confianza en los paquetes recibidos.
+
+Algunas de las amenazas m\'as sencillas para el protocolo son las diferentes formas de intercepci\'on de paquetes existentes. Si bien este problema est\'a lejos de ser exclusivo de DNS, el comportamiento particular del protocolo (en el que se env\'ian \textit{querys} o respuestas completas en un \'unico paquete UDP sin firma digital ni encriptaci\'on) lo hace muy facilmente vulnerable. 
+
+Existen varios posibles ataques bajo la idea de intercepci\'on de paquetes. A continuaci\'on veremos algunos escenarios posibles\footnote{Los ataques presentados solo ser\'an vistos desde el punto de vista del servicio de resoluci\'on de nombres. Esto no implica que no posean otros \'angulos de ataque}.
+
+En el siguiente cap\'itulo analizaremos de qu\'e manera DNSSEC introduce confianza en los paquetes recibidos.
+
+\subsection{MITM}
+
+Este ataque explota el protocolo ARP. La idea b\'asica es que el atacante env\'ia paquetes ARP armados de forma tal que identifique a s\'i mismo o a un host controlado por el atacante como Puerta de Enlace Predeterminada de la red local, esto har\'a que todos los paquetes que est\'en dirigidos hacia alg\'un host fuera de la LAN caigan en manos del atacante. De esta forma, las consultas DNS pueden ser interceptadas y el atacante termina por controlar hacia donde se dirige la v\'ictima en todo momento.
+
+Este es el llamado ataque $Man In The Middle$.
+
+\subsection{Intercepci\'on DHCP}
+
+Los ataques MITM necesitan una cierta elaboraci\'on. Adem\'as de montar los servidores a los cuales se redireccionar\'a a la v\'ictima, se tiene que contar con software que se encargue de realizar el cambio de los paquetes necesarios en tiempo real, lo cual no es una tarea trivial. Otra forma de realizar un ataque similar involucra el montado de un servidor DHCP de forma que la v\'ictima, a la hora de realizar el pedido de una direcci\'on de IP, tome la respuesta del servidor DHCP del atacante. Esta respuesta estar\'ia conformada por los servidores de DNS primario y secundario, los cuales ser\'ian controlados por el atacante.
+
+
 \section{ID guessing y predicci\'on de querys}
+
 Dado que el campo de ID en el encabezado est\'a conformado por \'unicamente 16 bits, existen solo $2^{32}$ combinaciones de ID entre cliente y servidor. Peor a\'un, en la pr\'actica (debido a firewalls u otras restricciones) es com\'un que el ID y el puerto UDP del cliente pueden ser predichos a partir del tr\'afico previo, lo que reduce el espacio de b\'usqueda a menos de $2^{16}$ posibilidades: muy poco contra ataques por fuerza bruta. Si bien requiere cierta adivinaci\'on por parte de los atacantes, es muy efectivo cuando el cliente act\'ua de manera predecible por situaciones particulares, y puede permitir que el atacante introduzca falsas respuestas.\\
 Una vez m\'as, observaremos c\'omo DNSSEC permite detectar este tipo de ataques.
+
 \section{Name Chaining}
+
 Es un tipo de amenaza particular al protocolo DNS, y son un subconjunto de los ataques llamados ``cache poisoning''. En los peores casos, este tipo de ataques permiten redirigir una \textit{query} a cualquier locaci\'on elegida por el atacante. De esta manera, el atacante puede introducir direcciones DNS arbitrarias en la respuesta, e inyectar datos falsos asociados a dichas direcciones.\\
 DNSSEC puede ayudar a proteger en muy buena parte este tipo de ataques, aunque existen algunos ataques m\'as avanzados que pueden requerir trabajo adicional antes de tener una protecci\'on m\'as completa.
+
 \section{Traici\'on de un servidor de confianza}
+
 (No s\'e si incluir esto ac\'a, DNSSEC no ayuda)
+
 \section{Denial of Service}
+
 (No s\'e si incluir esto ac\'a, DNSSEC no ayuda)
+
 \section{Authenticated Denial of Domain Names}
+
 (No s\'e si incluir esto ac\'a, DNSSEC no ayuda)
+
 \section{Wildcards}
+
 Los \textit{wildcards} son utilizados para crear patrones similares a expresiones regulares que permiten sintetizar el nombre de un dominio, y evaluarlo din\'amicamente\cite{rfc1034}. SINCERAMENTE NO ENTIENDO DEL TODO, CHECK!
