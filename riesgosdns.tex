@@ -6,15 +6,11 @@ Existen muchos tipos de amenazas diferentes para el sistema DNS; muchas de ellas
 
 Algunas de las amenazas m\'as sencillas para el protocolo son las diferentes formas de intercepci\'on de paquetes existentes. Si bien este problema est\'a lejos de ser exclusivo de DNS, el comportamiento particular del protocolo (en el que se env\'ian \textit{querys} o respuestas completas en un \'unico paquete UDP sin firma digital ni encriptaci\'on) lo hace muy facilmente vulnerable. 
 
-Existen varios posibles ataques bajo la idea de intercepci\'on de paquetes. A continuaci\'on veremos algunos escenarios posibles\footnote{Los ataques presentados solo ser\'an vistos desde el punto de vista del servicio de resoluci\'on de nombres. Esto no implica que no posean otros \'angulos de ataque}.
-
-En el siguiente cap\'itulo analizaremos de qu\'e manera DNSSEC introduce confianza en los paquetes recibidos.
+Existen varios posibles ataques bajo la idea de intercepci\'on de paquetes. A continuaci\'on veremos algunos escenarios posibles\footnote{Los ataques presentados solo ser\'an vistos desde el punto de vista del servicio de resoluci\'on de nombres. Esto no implica que no posean otros \'angulos de ataque.}, y en el siguiente cap\'itulo analizaremos de qu\'e manera DNSSEC introduce confianza en los paquetes recibidos.
 
 \subsection{MITM}
 
-Este ataque explota el protocolo ARP. La idea b\'asica es que el atacante env\'ia paquetes ARP armados de forma tal que identifique a s\'i mismo o a un host controlado por el atacante como Puerta de Enlace Predeterminada de la red local, esto har\'a que todos los paquetes que est\'en dirigidos hacia alg\'un host fuera de la LAN caigan en manos del atacante. De esta forma, las consultas DNS pueden ser interceptadas y el atacante termina por controlar hacia donde se dirige la v\'ictima en todo momento.
-
-Este es el llamado ataque $Man In The Middle$.
+Este ataque explota el protocolo ARP. La idea b\'asica es que el atacante env\'ia paquetes ARP armados de forma tal que identifique a s\'i mismo o a un host controlado por el atacante como Puerta de Enlace Predeterminada de la red local, lo que hace que todos los paquetes que est\'en dirigidos hacia alg\'un host fuera de la LAN caigan en manos del atacante. De esta forma, las consultas DNS pueden ser interceptadas y el atacante termina por controlar hacia d\'onde se dirige la v\'ictima en todo momento. Este tipo de ataques son llamados \textit{Man In The Middle}.
 
 \subsection{Intercepci\'on DHCP}
 

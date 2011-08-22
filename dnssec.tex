@@ -2,7 +2,7 @@
 
 \section{Registros de recurso}
 
-El principal concepto que trae DNSSEC de la mano es el de $Firmado de zonas$. Para estrablecer una zona firmada de una forma crÃ­ptogrÃ¡ficamente segura, se deben contar con los siguientes campos:
+El principal concepto que trae DNSSEC de la mano es el de \textit{Firmado de zonas}. Para establecer una zona firmada de manera criptográficamente segura, es necesario contar con los siguientes campos:
 
 \begin{itemize}
   \item DNSKEY: DNS Public Key
@@ -11,24 +11,24 @@ El principal concepto que trae DNSSEC de la mano es el de $Firmado de zonas$. Pa
   \item DS: Delegation Signer
 \end{itemize}
 
-Para poder utilizar esta estructura nueva de firmado de datos, cada administrador de zona debe generar un par de claves p\'ublica y privada. Esta clave privada ser\'a la que se usar\'a para firmar conjuntos de Resourse Records dentro de la zona. Para que sea posible la verificaci\'on de la firma, el administrador puede proveer el registro DNSKEY con la clave p\'ublica que va de la mano de la privada con la que firm\'o los RRs.
+Para poder utilizar esta estructura nueva de firmado de datos, cada administrador de zona debe generar un par de claves p\'ublica y privada. Esta clave privada ser\'a la que se usar\'a para firmar conjuntos de Resource Records dentro de la zona. Para que sea posible la verificaci\'on de la firma, el administrador puede proveer el registro DNSKEY con la clave p\'ublica asociada a la clave privada con la que firm\'o los RRs.
 
-Para cada conjunto de Registro de Recurso tiene que existir una firma en el formato de RRSIG, cuyos datos conformen los declarados en la definici\'on del conjunto. De forma opcional, se pueden firmar m\'as de una vez un conjunto, aun que esto no agrega gran seguridad por sobre el modelo b\'asico.
+Para cada conjunto de Registro de Recurso tiene que existir una firma en el formato de RRSIG, cuyos datos conformen los declarados en la definici\'on del conjunto. De forma opcional, se puede firmar m\'as de una vez cada conjunto, aunque esto no representa un mayor incremento de seguridad respecto al modelo b\'asico.
 
-Dado que DNS es una estructura jer\'arquica, el manejo de zonas y delegaci\'on de las mismas es escencial, y a la vez un gran punto de problemas para el protocolo. Para tratar de mejorar la seguridad de procedimientos como el intercambio de zonas o la delegaci\'on, se introducen RRs como NSEC y DS.
+Dado que DNS es una estructura jer\'arquica, el manejo de zonas y delegaci\'on de éstas es esencial, y represetan un gran conjunto de problemas para el protocolo. Para tratar de mejorar la seguridad de procedimientos como el intercambio de zonas o la delegaci\'on, se introducen RRs como NSEC y DS.
 
 \section{El lado del cliente}
 
-Desde el lado del cliente, los registros de los cuales se hablaba anteriormente son la base para la autenticaci\'on de las respuestas recibidas de un servidor DNS.
+Desde el lado del cliente, los registros mencionados son la base para la autenticaci\'on de las respuestas recibidas de un servidor DNS.
 
-Como muchos sistemas de seguridad basada en firmado criptogr\'afico asim\'atrico, DNSSEC establece la autenticaci\'on de un servidor dependiendo de la cadena de confianza de la firma que este provea. De esta forma, el cliente cuenta con un conjunto de firmas de confianza, y en base a ellos determina la confianza de las respuestas obtenidas. Este conjunto de certificados $base$ representa lo que se suele denominar  $Trust$ $Anchor$, y cada firma que posea una cadena de confianza que termine o que en algÃºn punto referencie alg\'un elemento de nuestro $Trust$ $Anchor$ ser\'a de confianza.
+Como muchos sistemas de seguridad basados en firmado criptogr\'afico asimétrico, DNSSEC establece la autentificaci\'on de un servidor dependiendo de la cadena de confianza de la firma que éste provea. De esta forma, el cliente cuenta con un conjunto de firmas de confianza, y en base a ellos determina la confianza de las respuestas obtenidas. Este conjunto de certificados \textit{base} representa lo que se suele denominar  \textit{Trust Anchor}, y cada firma que posea una cadena de confianza que termine o que en algún punto referencie alg\'un elemento de nuestro \textit{Trust Anchor} ser\'a considerato también de confianza.
 
-Para establecer la relaci\'on en la cadena de confianza, se utilizan los registros descriptos con anterioridad: NSEC y DS. Si no se cuenta con un $Trust$ $Anchor$ con al menos una clave p\'ublica disponible, no ser\'a posible verificar ning\'un tipo de respuesta con la seguridad que se pretende proveer. En un caso extremo como este, es posible detectar alg\'un tipo de manipulaci\'on de las respuestas por un atacante que no haya interceptado la consulta de la DNSKEY y la haya reemplazado por una cuya clave privada \'el controla, pero un atacante sofisticado podr\'a manipular los datos de forma tal que no sea posible detectarlo.
+Para establecer la relaci\'on en la cadena de confianza, se utilizan los registros descriptos con anterioridad: NSEC y DS. Si no se cuenta con un \textit{Trust Anchor} con al menos una clave p\'ublica disponible, no ser\'a posible verificar ning\'un tipo de respuesta con la seguridad que se pretende proveer. En un caso extremo como éste, es posible detectar alg\'un tipo de manipulaci\'on de las respuestas por un atacante que no haya interceptado la consulta de la DNSKEY y la haya reemplazado por una cuya clave privada que \'el controla, pero un atacante sofisticado podr\'a manipular los datos de forma tal que no sea posible detectarlo.
 
 \section{Consideraciones t\'ecnicas}
 
-Los problemas de seguridad inform\'atica se pueden representar como una cadena que se busca romper. El atacante siempre tendr\'a como objetivo principal el eslab\'on m\'as debil, por ello es que hay que cuidar cada parte al m\'aximo.
+Los problemas de seguridad inform\'atica se pueden representar como una cadena que se busca romper. El atacante siempre tendr\'a como objetivo principal el eslab\'on m\'as debil, y es por ello que hay que cuidar cada parte al m\'aximo.
 
-Una de las primeras cuestiones a tener en cuenta son los algoritmos criptogr\'aficos utilizados. Si bien el standard elegido es RSA/SHA-1, se recomienda utilizar RSA/SHA-256. En cuanto a la longitud de las claves RSA, lo ideal en este momento es utilizar no menos de 4096 bits, y tiempos de efectividad no demasiado largos, ya que aquellos pares de claves con mayor tiempo de valid\'es ser\'an los principales objetivos de un atacante. Los sistemas criptogr\'aficos imposibles de romper son aquellos cuyas claves son utilizadas para encriptar un \'unico conjunto de datos ($One$ $Time$ $Pads$), y si bien no es un extremo pr\'actico para algo como DNSSEC, es importante encontrar un buen punto de compromiso entre seguridad y practicidad. En general, las claves RSA suelen usarse con valid\'es de 1 a\~no.
+Una de las primeras cuestiones a tener en cuenta son los algoritmos criptogr\'aficos utilizados. Si bien el standard elegido es RSA/SHA-1, se recomienda utilizar RSA/SHA-256. En cuanto a la longitud de las claves RSA, lo ideal en la actualidad es utilizar no menos de 4096 bits, y tiempos de efectividad no demasiado largos, ya que aquellos pares de claves con mayor tiempo de valid\'ez ser\'an los principales objetivos de un atacante. Los sistemas criptogr\'aficos imposibles de romper son aquellos cuyas claves son utilizadas para encriptar un \'unico conjunto de datos (\textit{One Time Pads}), y si bien es un extremo poco pr\'actico para un protocolo como DNSSEC, es importante encontrar un buen punto de compromiso entre seguridad y practicidad. En general, las claves RSA suelen usarse con valid\'ez de 1 a\~no.
 
-Por otro lado, aun cuando las llaves sean de un tama\~no mayor o igual a 4096 bits, y la valid\'es sea corta, el resguardo del la parte privada de la misma es muy importante. En general se recomienda mantenerlas en alg\'un lugar que no sea accesible desde internet.
+Por otro lado, aun cuando las llaves sean de un tama\~no mayor o igual a 4096 bits, y la valid\'ez sea corta, el resguardo de la parte privada de ésta es muy importante. En general se recomienda mantenerlas en alg\'un lugar que no sea accesible desde internet.
