@@ -2,7 +2,7 @@
 
 \section{Registros de recurso}
 
-El principal concepto que trae DNSSEC de la mano es el de \textit{Firmado de zonas}. Para establecer una zona firmada de manera criptográficamente segura, es necesario contar con los siguientes campos:
+El principal cambio propuesto por DNSSEC es el \textit{Firmado de zonas}. Para establecer una zona firmada de manera criptográficamente segura, es necesario contar con los siguientes campos:
 
 \begin{itemize}
   \item DNSKEY: DNS Public Key
@@ -29,6 +29,6 @@ Para establecer la relaci\'on en la cadena de confianza, se utilizan los registr
 
 Los problemas de seguridad inform\'atica se pueden representar como una cadena que se busca romper. El atacante siempre tendr\'a como objetivo principal el eslab\'on m\'as debil, y es por ello que hay que cuidar cada parte al m\'aximo.
 
-Una de las primeras cuestiones a tener en cuenta son los algoritmos criptogr\'aficos utilizados. Si bien el standard elegido es RSA/SHA-1, se recomienda utilizar RSA/SHA-256. En cuanto a la longitud de las claves RSA, lo ideal en la actualidad es utilizar no menos de 4096 bits, y tiempos de efectividad no demasiado largos, ya que aquellos pares de claves con mayor tiempo de valid\'ez ser\'an los principales objetivos de un atacante. Los sistemas criptogr\'aficos imposibles de romper son aquellos cuyas claves son utilizadas para encriptar un \'unico conjunto de datos (\textit{One Time Pads}), y si bien es un extremo poco pr\'actico para un protocolo como DNSSEC, es importante encontrar un buen punto de compromiso entre seguridad y practicidad. En general, las claves RSA suelen usarse con valid\'ez de 1 a\~no.
+Una de las primeras cuestiones a tener en cuenta son los algoritmos criptogr\'aficos utilizados. Si bien el standard elegido es RSA/SHA-1, se recomienda utilizar RSA/SHA-256. En cuanto a la longitud de las claves RSA, lo ideal en la actualidad es utilizar no menos de 4096 bits, y tiempos de efectividad no demasiado largos, ya que aquellos pares de claves con mayor tiempo de validez ser\'an los principales objetivos de un atacante. Los sistemas criptogr\'aficos imposibles de romper son aquellos cuyas claves son utilizadas para encriptar un \'unico conjunto de datos (\textit{One Time Pads}), y si bien es un extremo poco pr\'actico para un protocolo como DNSSEC, es importante encontrar un buen punto de compromiso entre seguridad y practicidad. En general, las claves RSA suelen usarse con validez de 1 a\~no.
 
-Por otro lado, aun cuando las llaves sean de un tama\~no mayor o igual a 4096 bits, y la valid\'ez sea corta, el resguardo de la parte privada de ésta es muy importante. En general se recomienda mantenerlas en alg\'un lugar que no sea accesible desde internet.
+Por otro lado, a\'un cuando las llaves sean de un tama\~no mayor o igual a 4096 bits, y la validez sea corta, el resguardo de la parte privada de ésta es muy importante. En general se recomienda mantenerlas en alg\'un lugar que no sea accesible desde internet.

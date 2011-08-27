@@ -10,36 +10,90 @@ Existen varios posibles ataques bajo la idea de intercepci\'on de paquetes. A co
 
 \subsection{MITM}
 
-Este ataque explota el protocolo ARP. La idea b\'asica es que el atacante env\'ia paquetes ARP armados de forma tal que identifique a s\'i mismo o a un host controlado por el atacante como Puerta de Enlace Predeterminada de la red local, lo que hace que todos los paquetes que est\'en dirigidos hacia alg\'un host fuera de la LAN caigan en manos del atacante. De esta forma, las consultas DNS pueden ser interceptadas y el atacante termina por controlar hacia d\'onde se dirige la v\'ictima en todo momento. Este tipo de ataques son llamados \textit{Man In The Middle}.
+Este ataque explota el protocolo ARP. La idea b\'asica es que el atacante
+env\'ia paquetes ARP armados de forma tal que identifique a s\'i mismo o a un
+host controlado por el atacante como Puerta de Enlace Predeterminada de la red
+local, lo que hace que todos los paquetes que est\'en dirigidos hacia alg\'un
+host fuera de la LAN caigan en manos del atacante. De esta forma, las consultas
+DNS pueden ser interceptadas y el atacante termina por controlar hacia d\'onde
+se dirige la v\'ictima en todo momento. Este tipo de ataques son llamados
+\textit{Man In The Middle}.
+
+Una situaci\'on similar se presenta cuando una instituci\'on implementa un ``portal
+cautivo'' para los usuarios de la red para acceso a internet. Esto no es un
+ataque propiamente dicho, pero las consultas de los usuarios son interceptadas
+y redireccionadas hacia alg\'un sitio de la instituci\'on en cuesti\'on.
 
 \subsection{Intercepci\'on DHCP}
 
-Los ataques MITM necesitan una cierta elaboraci\'on. Adem\'as de montar los servidores a los cuales se redireccionar\'a a la v\'ictima, se tiene que contar con software que se encargue de realizar el cambio de los paquetes necesarios en tiempo real, lo cual no es una tarea trivial. Otra forma de realizar un ataque similar involucra el montado de un servidor DHCP de forma que la v\'ictima, a la hora de realizar el pedido de una direcci\'on de IP, tome la respuesta del servidor DHCP del atacante. Esta respuesta estar\'ia conformada por los servidores de DNS primario y secundario, los cuales ser\'ian controlados por el atacante.
+Los ataques MITM necesitan una cierta elaboraci\'on. Adem\'as de montar los
+servidores a los cuales se redireccionar\'a a la v\'ictima, se tiene que contar
+con software que se encargue de realizar el cambio de los paquetes necesarios en
+tiempo real, lo cual no es una tarea trivial. 
 
+Otra forma de realizar un ataque similar involucra el montado de un servidor
+DHCP de forma que la v\'ictima, a la hora de realizar el pedido de una
+direcci\'on de IP, tome la respuesta del servidor DHCP del atacante. Esta
+respuesta estar\'ia conformada por los servidores de DNS primario y secundario,
+los cuales ser\'ian controlados por el atacante.
 
-\section{ID guessing y predicci\'on de querys}
+\section{ID guessing y predicci\'on de queries}
 
 Dado que un paquete DNS contiene un campo de ID en el encabezado que est\'a conformado por \'unicamente 16 bits, existen solo $2^{32}$ combinaciones de ID entre cliente y servidor. Peor a\'un, en la pr\'actica (debido a firewalls u otras restricciones) es com\'un que el ID y el puerto UDP del cliente pueden ser predichos a partir del tr\'afico previo, lo que reduce el espacio de b\'usqueda a menos de $2^{16}$ posibilidades: muy poco contra ataques por fuerza bruta. Si bien requiere cierta adivinaci\'on por parte de los atacantes, es muy efectivo cuando el cliente act\'ua de manera predecible por situaciones particulares, y puede permitir que el atacante introduzca falsas respuestas.\\
 Una vez m\'as, observaremos c\'omo DNSSEC permite detectar este tipo de ataques.
 
-\section{Name Chaining}
+\section{Envenenamiento Cach\'e}
 
-Es un tipo de amenaza particular al protocolo DNS, y son un subconjunto de los ataques llamados ``cache poisoning''. En los peores casos, este tipo de ataques permiten redirigir una \textit{query} a cualquier locaci\'on elegida por el atacante. De esta manera, el atacante puede introducir direcciones DNS arbitrarias en la respuesta, e inyectar datos falsos asociados a dichas direcciones.\\
-DNSSEC puede ayudar a proteger en muy buena parte este tipo de ataques, aunque existen algunos ataques m\'as avanzados que pueden requerir trabajo adicional antes de tener una protecci\'on m\'as completa.
+Todo este tipo de ataques que se vienen tratando hasta ahora son principalmente
+focalizados al cliente que realiza la consulta DNS. Cuando un cliente realiza
+una consulta a un servidor DNS, abstrayendo el tipo de resoluci\'on que utilice,
+en general se consulta m\'as de un servidor, bas\'ando la cadena de consultas en
+las distintas respuestas que va recibiendo. Si la misma consulta se realiza
+sucesivas veces, las respuesta se suelen almacenar en un cach\'e.
+
+Esta cach\'e es populada 
+
+Es un tipo de amenaza particular al protocolo DNS, y son un subconjunto de los
+ataques llamados ``cache poisoning''. En los peores casos, este tipo de ataques
+permiten redirigir una \textit{query} a cualquier locaci\'on elegida por el
+atacante. De esta manera, el atacante puede introducir direcciones DNS
+arbitrarias en la respuesta, e inyectar datos falsos asociados a dichas
+direcciones.
+
+DNSSEC puede ayudar a proteger en muy buena parte este tipo de ataques, aunque
+existen algunos ataques m\'as avanzados que pueden requerir trabajo adicional
+antes de tener una protecci\'on m\'as completa.
 
 \section{Traici\'on de un servidor de confianza}
-Este tipo de amenaza es una variación de los ataques de intersección de paquetes, con la diferencia de que en este caso, el cliente envía voluntariamente los pedidos al atacante. Dado que muchas máquinas están configuradas únicamente con \textit{stub resolvers}, y utilizan servidores de confianza para que hagan las \textit{queries} DNS en su lugar, si alguno de estos servidores no es tan confiable como aparenta, es posible que un atacante utilice maliciosamente dicho servidor enviando respuestas falsas a las \textit{query} del cliente.\\
-La defensa ante este tipo de ataques es la misma que para la intercepción de paquetes: el cliente debe revisar por sí mismo las firmas digitales de DNSSEC, lo que a su vez puede resultar problemático porque requiere conocer algunas claves públicas a las que el cliente no siempre tiene facil acceso.
+Este tipo de amenaza es una variaci\'on de los ataques de intercepci\'on de paquetes, con la diferencia de que en este caso, el cliente env\'ia voluntariamente los pedidos al atacante. Dado que muchas m\'aquinas est\'an configuradas \'unicamente con \textit{stub resolvers}, y utilizan servidores de confianza para que hagan las \textit{queries} DNS en su lugar, si alguno de estos servidores no es tan confiable como aparenta, es posible que un atacante utilice maliciosamente dicho servidor enviando respuestas falsas a las \textit{query} del cliente.\\
+La defensa ante este tipo de ataques es la misma que para la intercepci\'on de paquetes: el cliente debe revisar por s\'i mismo las firmas digitales de DNSSEC, lo que a su vez puede resultar problem\'atico porque requiere conocer algunas claves p\'ublicas a las que el cliente no siempre tiene facil acceso.
 
 
-\section{Denial of Service}
-Como cualquier tipo de servicio en la red, DNS es vulnerable a los ataques de tipo Denial of Service (ataques que causan que un servicio sea inaccesible a los usuarios provocando la pérdida de la conectividad de la red por o la sobrecarga de los recursos computacionales del sistema de la víctima\cite{dos06}). Lamentablemente, DNSSEC no sólo no ayuda a resolver este problema, sino que puede empeorarlo considerablemente debido tanto a que la utilización de firmas digitales requiere un mayor procesamiento por paquete, como a que la cantidad de paquetes enviados a la red es mayor.
+\section{Denegaci\'on de servicio}
+Como cualquier tipo de servicio en la red, DNS es vulnerable a los ataques de tipo Denial of Service (ataques que causan que un servicio sea inaccesible a los usuarios provocando la p\'erdida de la conectividad de la red o la sobrecarga de los recursos computacionales del sistema de la v\'ictima\cite{dos06}). Lamentablemente, DNSSEC no s\'olo no ayuda a resolver este problema, sino que puede empeorarlo considerablemente debido tanto a que la utilizaci\'on de firmas digitales requiere un mayor procesamiento por paquete, como a que la cantidad de paquetes enviados a la red es mayor.
 
 
 \section{Authenticated Denial of Domain Names}
 
-(No s\'e si incluir esto ac\'a, DNSSEC no ayuda)
+Uno de los grandes problemas que se presentan a la hora de plantear el modelo
+de protecci\'on de DNSSEC es c\'omo corroborar de forma segura la no existencia de
+un dominio en una consulta. Si ning\'un checkeo es realizado, resulta posible
+interceptar una respuesta a un \textit{query} y descartar alg\'un RR de \'esta sin que
+el cliente de la consulta pueda saberlo, simulando de esta manera la no existencia de un dominio arbitrario.\\
+Esta situaci\'on hace que deba existir alguna forma segura de corroborar qu\'e dominios
+efectivamente existen y cu\'ales no. Una posibilidad es mantener una base de
+datos de dominios que no hay sido registrados, pero esto no representa una
+soluci\'on viable.
 
 \section{Wildcards}
 
-Los \textit{wildcards} son utilizados para crear patrones similares a expresiones regulares que permiten sintetizar el nombre de un dominio, y evaluarlo din\'amicamente\cite{rfc1034}. SINCERAMENTE NO ENTIENDO DEL TODO, CHECK!
+Los \textit{wildcards} son utilizados para crear patrones similares a
+expresiones regulares que permiten sintetizar el nombre de un dominio, y
+evaluarlo din\'amicamente \cite{rfc1034}. El problema que esto trae est\'a
+relacionado con el poder criptogr\'afico de autentificar un conjunto de datos
+extra\'idos desde un servidor DNS: si un RR contiene wildcards, en la respuesta a
+un query estos ser\'an ``instanciados'' y las firmas realizadas sobre esos datos
+por las autoridades detr\'as del servidor no necesariamente seguir\'an siendo
+v\'alidas. La integridad de los datos ha sido cambiada, y no es posible autentificar de forma
+directa los datos con las t\'ecnicas criptogr\'aficas b\'asicas
+establecidas para DNSSEC.
