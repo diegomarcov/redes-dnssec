@@ -44,29 +44,17 @@ Una vez m\'as, observaremos c\'omo DNSSEC permite detectar este tipo de ataques.
 
 \section{Envenenamiento de Cach\'e}
 
-Todo este tipo de ataques que se vienen tratando hasta ahora son principalmente
-focalizados al cliente que realiza la consulta DNS. Cuando un cliente realiza
-una consulta a un servidor DNS, abstrayendo el tipo de resoluci\'on que utilice,
-en general se consulta m\'as de un servidor, bas\'ando la cadena de consultas en
-las distintas respuestas que va recibiendo. Si la misma consulta se realiza
-sucesivas veces, las respuesta se suelen almacenar en una cach\'e.
+Todo los ataques anteriores están principalmente enfocados hacia el cliente que realiza la consulta DNS. El envenamiento de cach\'e, en cambio, está enfocado en atacar al servidor que responde a las \textit{queries}.\\
+Cuando un cliente realiza una consulta a un servidor DNS, m\'as all\'a del tipo de resoluci\'on que utilice, en general se consulta m\'as de un servidor, formando una cadena de consultas en base a las distintas respuestas recibidas. Si la misma consulta se realiza reiteradas veces, las respuesta suelen almacenarse en un cach\'e.\\
 
-Dado que esta cach\'e esta compuesta de respuestas a consultas a otros
-servidores DNS, la veracidad de estas \'ultimas es de suma importancia.
-Si un atacante logra utilizar alguna de las t\'ecnicas vistas anteriormente,
-solo que esta vez con un servidor DNS como v\'ictima, puede lograr
-``envenenar'' la cach\'e con respuestas inv\'alidas, cuidadosamente construidas
-por el atacante. De esta forma los usuarios que consulten a este servidor por
-alguno de los dominios que no pertenezcan a la zona del msimo,
-este primero consultar\'a su cach\'e para ver si ya se realiz\'o esa consulta
-anteriormente y en caso de que sea asi responder\'a con la respuesta
-almacenada. Si el atacante ``envenena'' la respuesta correspondiente a un
-dominio popular como puede ser www.google.com, es muy posible que pueda
-terminar controlando lo que sea que los usuarios del servidor DNS
-``infectado'' (v\'ictimas indirectas) hagan en la red.
+Dado que esta cach\'e est\'a compuesta de respuestas a consultas a otros servidores DNS, la veracidad de dichas respuestas es de suma importancia. Si un atacante logra utilizar alguna de las t\'ecnicas vistas anteriormente, solo que esta vez con un servidor DNS como v\'ictima, puede lograr
+``envenenar'' la cach\'e con respuestas inv\'alidas cuidadosamente construidas. De esta forma, los usuarios que consulten a este servidor por
+alguno de los dominios que no pertenezcan a la zona de \'este, el servidor primero consultar\'a su cach\'e para ver si ya se realiz\'o la consulta
+anteriormente y en caso de que as\'i sea utilizar\'a la respuesta almacenada. Si el atacante ``envenena'' la respuesta correspondiente a un
+dominio popular como \texttt{www.google.com}, es muy posible que pueda controlar todo lo que los usuarios del servidor DNS ``infectado'' hagan en la red.
 
 \section{Traici\'on de un servidor de confianza}
-Este tipo de amenaza es una variaci\'on de los ataques de intercepci\'on de paquetes, con la diferencia de que en este caso, el cliente env\'ia voluntariamente los pedidos al atacante. Dado que muchas m\'aquinas est\'an configuradas \'unicamente con \textit{stub resolvers}, y utilizan servidores de confianza para que hagan las \textit{queries} DNS en su lugar, si alguno de estos servidores no es tan confiable como aparenta, es posible que un atacante utilice maliciosamente dicho servidor enviando respuestas falsas a las \textit{query} del cliente.\\
+Este tipo de amenaza es una variaci\'on de los ataques de intercepci\'on de paquetes, con la diferencia de que en este caso, el cliente env\'ia voluntariamente los pedidos al atacante. Dado que muchas m\'aquinas est\'an configuradas \'unicamente con \textit{stub resolvers}, y utilizan servidores de confianza para que hagan las \textit{queries} DNS en su lugar, si alguno de estos servidores no es tan confiable como aparenta, es posible que un atacante utilice maliciosamente dicho servidor enviando respuestas falsas a las \textit{queries} del cliente.\\
 La defensa ante este tipo de ataques es la misma que para la intercepci\'on de paquetes: el cliente debe revisar por s\'i mismo las firmas digitales de DNSSEC, lo que a su vez puede resultar problem\'atico porque requiere conocer algunas claves p\'ublicas a las que el cliente no siempre tiene facil acceso.
 
 
