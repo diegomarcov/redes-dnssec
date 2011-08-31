@@ -2,21 +2,21 @@
 
 El objetivo de este trabajo es realizar un estudio sobre DNSSEC (Domain Name System Security Extensions), incluyendo tanto las especifaciones que lo componen como las problem\'aticas existentes a la hora de realizar su implementaci\'on y puesta en marcha.
 
-\section{DNS hoy}
-DNS es un sistema de nomenclatura jer\'arquica que permite asociar nombres de dominios arbitrarios a identificadores binarios (dirección de IP) asociados a cualquier equipo conectado a una red. Este servicio a nivel global se divide en particiones disjuntas de dominios dependiendo de criterios como por ejemplo, si el nombre de dominio termina en $.com$ o $.org$.
+\section{Evoluci\'on de la red}
+En un principio, las computadoras y las redes de comunicaciones estaban destinadas a ambientes acad\'emicos y operaban bajo la idea de compartir informaci\'on \'unicamente. Al d\'ia de hoy, el panorama cambió considerablemente. Internet sigue teniendo como principal objetivo compartir informaci\'on, pero tiene muchos otros objetivos que corren a la par de \'este; entre ellos podemos encontrar la promoci\'on a trav\'es de la
+publicidad, u otros objetivos enfocados al crecimiento econ\'omico.\\
+La monetarizaci\'on de internet ha cambiado y deformado los principios con los que surgi\'o, y \'esto trajo consigo una serie de problemas para los usuarios: virus o ``malware'' que buscan propagarse por la red e inyectar anuncios o robar informaci\'on son uno de los ejemplos m\'as conocidos, y lamentablemente el hecho de que \textit{la red} haya sido pensada en un \'ambito acad\'emico bajo objetivos nobles hizo que el diseño de los protocolos sobre los cuales se montan los sistemas no tengan en cuenta la posibilidad de que alguien haga mal uso de los recursos.\\
+A lo largo de los \'ultimos 10 a\~nos ha habido una tendencia de agregar una capa protegida criptogr\'aficamente a los \textit{stacks} de protocolos, en su mayor\'ia utilizando alguna forma del ahora conocido SSL. HTTPS est\'a comenzando a ser el standard en sitios web con informaci\'on ``sensible'' para el usuario. Protocolos como POP3, SMTP, IMAP o FTP, que transfer\'ian todos sus datos en texto plano, se comenzaron  a utilizar junto con SSL o SSH, y el objetivo de esta nueva capa ``protegida'' es evitar el \textit{sniffing} de datos en la red por una tercera parte.\\
+Entre los distintos protocolos que surgieron años atr\'as, se encuentra DNS. Este protocolo, si bien no transporta informaci\'on que a primera vista se considere sensible, comenz\'o a requerir protecciones criptogr\'aficas dado que de \'el dependen las direcciones hacia las cuales los usuarios de la red nos dirigimos cuando tratamos de utilizar alg\'un servicio direccionado con una URL.
 
+\section{DNS hoy}
+DNS es un sistema de nomenclatura jer\'arquica que permite asociar nombres de dominios arbitrarios a identificadores binarios (dirección de IP) asociados a cualquier equipo conectado a una red. Este servicio a nivel global se divide en particiones disjuntas de dominios dependiendo de criterios como por ejemplo, si el nombre de dominio termina en \textit{.com} o \textit{.org}.\\
 Estas particiones se denominan ``zonas de autoridad'', que son porciones del espacio de nombres, y cada una de ellas est\'a compuesta por al menos un dominio. A su vez, los subdominios de cada uno de estos dominios pueden ser delegados a otras zonas de autoridad diferentes.
 
 \subsection{Vulnerabilidades}
 Tanto algunas deficiencias inherentes al protocolo DNS como algunos defectos en las implementaciones m\'as comunes hacen que el sistema de DNS actual sea vulnerable a diferentes tipos de ataques. En el cap\'itulo siguiente veremos algunas de estas debilidades en detalle, con especial énfasis en \textit{cache poisoning}: una técnica que permite manipular informaci\'on del caché de un servidor DNS, y una de las principales motivaciones para la creaci\'on de DNSSEC\cite{cert08}.
 
 \section{¿Qué es DNSSEC?}
-DNSSEC es un conjunto de especificaciones diseñadas para proveer mayor seguridad a los clientes del servicio DNS respecto a los or\'igenes e integridad de los datos\cite{rfc4033}. 
-
-Dada la utilizaci\'on global de DNS, la necesidad de dicha seguridad para hacer frente a las vulnerabilidades del sistema actual es cada vez m\'as importante. 
-
-La principal herramienta que se utiliza en DNSSEC es un sistema de firmas
-digitales criptogr\'aficas, que aseguran por un lado el no repudio de quien
-env\'ia la informaci\'on, y lo m\'as importante aun: la autenticaci\'on del
-emisor. De esta forma, el grado de complejidad que involucra la falsificaci\'on
-de respuestas de un servidor DNS aumenta considerablemente.
+DNSSEC es un conjunto de especificaciones diseñadas para proveer mayor seguridad a los clientes del servicio DNS respecto a los or\'igenes e integridad de los datos\cite{rfc4033}.\\
+Dada la utilizaci\'on global de DNS, la necesidad de dicha seguridad para hacer frente a las vulnerabilidades del sistema actual es cada vez m\'as importante. \\
+La principal herramienta que se utiliza en DNSSEC es un sistema de firmas digitales criptogr\'aficas, que aseguran por un lado el no repudio de quien env\'ia la informaci\'on, y lo m\'as importante a\'un: la autenticaci\'on del emisor. De esta forma, el grado de complejidad que involucra la falsificaci\'on de respuestas de un servidor DNS aumenta considerablemente.

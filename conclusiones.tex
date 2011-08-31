@@ -1,76 +1,10 @@
 \chapter{Conclusiones}
+Podemos decir que en DNS se desataron dos problem\'aticas importantes: por un lado, al ser un protocolo muy utilizado, complejo y descentralizado que no se accede expl\'icitamente, realizar modificaciones en \'el es un problema de alta complejidad. Por el otro, el hecho de que la tendencia sea usar un protocolo del estilo de SSL a trav\'es del modelo de confianza transitiva basado en firmas digitales, hace que los cimientos de DNSSEC sean considerablemente d\'ebiles.
 
-En un principio, todo lo relacionado con computadoras y las redes de
-comuniacaciones estaba destinado a ambientes acad\'emicos y operaban bajo la
-idea de compartir informaci\'on \'unicamente. Hoy en d\'ia el panorama ha
-cambiado considerablemente. Internet sigue teniendo como principal objetivo el
-compartir informaci\'on, pero tiene muchos otros objetivos que corren a la par
-de este. Entre ellos podemos encontrar a la promoci\'on a trav\'es de la
-publicidad, u otros objetivos claramente monetarios.
+El modelo de confianza transitiva en las firmas digitales tiene muchos problemas, como puede verse en la actualidad con HTTPS y las Entidades Certificantes. La confianza en una firma se reduce a un \textit{checkeo} recursivo de que quien certifica la firma actual es un certificado de confianza, hasta llegar a una firma ``root'', cuya confianza est\'a dada por una arbitrariedad establecida por concenso general; esto significa que existe la posibilidad de que una cadena de firmas termine en la firma de una entidad en la que se conf\'ia porque se cree que \'esta corrobora rigurosamente a qui\'en certifica, pero en verdad la instituci\'on en cuesti\'on certifique una entidad bajo datos falsos.
 
-La monetarizaci\'on de internet ha cambiado y deformado los principios con los
-que surgi\'o, y esto trajo consigo una serie de problemas para los usuarios.
+De cualquier manera, el modelo presenta problemas a\'un mayores. A\'un cuando la entidad certificante sea de confianza, un peque\~no error en la infraestructura de la entidad puede desatar un fallo de seguridad que puede resultar en un compromiso de las herramientas utilizadas con el objetivo de emitir firmas fraudulentas sin el consentimiento de la entidad, y que los usuarios resulten v\'ictimas de esto sin que puedan darse cuenta.
 
-Virus o ``malware'' que buscan propagarse por la red e inyectar anuncios o robar
-informaci\'on, son uno de los ejemplos m\'as conocidos de esto, y
-lamentablemente el hecho de que $la red$ haya sido pensada en un \'ambito
-acad\'emico bajo objetivos nobles hizo que el diseño de los protocolos sobre
-los cuales se montan los sitemas no tengan en cuenta la posibilidad de que
-alguien haga mal uso de los recursos.
+Adem\'as de este hecho, como se vi\'o anteriormente, DNSSEC por dise\~no no est\'a pensado para proteger de muchos ataques ya conocidos, e indirectamente acent\'ua otros que pueden llevar a graves consecuencias. \'Esto, sumado a la falta de confidencialidad inherente al protocolo, hacen que las ventajas obtenidas en el marco te\'orico est\'en lejos de mostrar sus frutos en la pr\'actica.
 
-A lo largo de los \'ultimos 10 a\~nos ha habido una tendencia de agregar una
-capa protegida criptogr\'aficamente a los $stacks$ de protocolos, en su
-mayor\'ia utilizando alguna forma del ahora conocido SSL. HTTPS est\'a
-comenzando a ser el standard en sitios web con informaci\'on ``sensible'' para
-el usuario. POP3, SMTP, IMAP, FTP, todos protocolos que transfer\'ian todos sus
-datos en texto plano, se comenzaron a utilizar de la mano con SSL o SSH. El
-objetivo de esta nueva capa ``protegida'' es evitar el $sniffing$ de datos en
-la red por una tercera parte.
-
-Entre los distintos protocolos que surgieron años atr\'as, se encuentra DNS.
-Este protocolo, si bien no transporta informaci\'on que a primera vista se
-considere sensible, igualmente est\'a necesitando protecciones
-criptogr\'aficas ya que de este servicio depende las direcciones hacia las
-cuales los usuarios de la red nos dirigimos cuando tratamos de utilizar alg\'un
-servicio direccionado con una URL.
-
-----------------
-
-De este hecho se desataron dos problematicas. Por un lado, DNS es un protocolo
-muy complejo y descentralizado de los m\'as usados en la actualidad de forma
-``indirecta'' (no es accedido expl\'icitamente). Esto hace que una
-modificaci\'on en el mismo sea de alta complejidad.
-
-Y por el otro lado, el hecho de que la tendencia sea usar un protocolo del
-estilo de SSL bas\'andose en el modelo de confianza transitiva basado en firmas
-digitales, hace que los simientos de lo que se llama DNSSEC sean
-considerablemente d\'ebiles. 
-
-El modelo de confianza transitiva en las firmas digitales tiene muchos
-problemas, como se lo ve en la actualidad con HTTPS y las Entidades
-Certificantes. La confianza en una firma se reduce a un checkeo recursivo de
-quien firma que la firma actual es de quien dice ser, hasta llegar a una firma
-``root'', cuya confianza est\'a dada por una arbitrariedad establecida por
-concenso general, es decir, si la cadena de firmas termina en la firma de una
-entidad en la que se conf\'ia porque se sabe que la misma corrobora
-rigurosamente a quien certifica no significa que en la actualidad capitalista
-no se puedan saltear dichas ``barreras'' y que la instituci\'on en cuesti\'on
-certifique una entidad bajo datos falsos.
-
-De cualquier manera, este modelo presenta problemas aun mayores. Aun cuando la
-entidad certificante sea de confianza, un peque\~no error en la infraestructura
-de la entidad puede desatar un fallo de seguridad que puede llevar a un
-compromiso de las herramientas utilizadas con el objetivo de emitir firmas
-fraudulentas sin el consentimiento de la entidad, y usuarios caigan v\'ictimas
-de esto sin que puedan darse cuenta.
-
-Adem\'as de este hecho, como se vio, DNSSEC por dise\~no no est\'a pensado para
-proteger de muchos ataques conocidos. E indirectamente acent\'ua otros que
-pueden llevar a graves consecuencias.
-
-Peor aun, asumiendo que DNSSEC protege los \'angulos que buscamos proteger, el
-``deployment'' del mismo resulta tan complejo que luego de m\'as de 5 años desde
-que se comenz\'o a especificar formalmente el protocolo.
-
-En conclusi\'on, los objetivos perseguidos por DNSSEC son copados, pero es una
-bosta.
+Por \'ultimo, a\'un en el caso de que DNSSEC protegiera todos los \'angulos que se busca proteger, el ``deployment'' de \'este resulta tan complejo que luego de m\'as de 5 a\~nos desde que se comenz\'o a especificar formalmente el protocolo, a\'un son unos pocos servidores los que lo utilizan, y usualmente s\'olo de manera opcional. Si consideramos adem\'as los bugs encontrados en muchas de las implementaciones consideradas ``seguras'', que resultaron en que muchos datos te\'oricamente protegidos pudieran accederse con facilidad mediante ataques sin mayor complejidad, podemos concluir que a pesar de las buenas intenciones del planteo de DNSSEC, el protocolo contin\'ua sin ser una buena fuente de seguridad para los usuarios.
